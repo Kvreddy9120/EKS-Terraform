@@ -27,6 +27,10 @@ resource "aws_iam_role_policy_attachment" "example-AmazonEKSClusterPolicy" {
 # ---------------------------------------------------------------------------
 # Networking data sources
 # ---------------------------------------------------------------------------
+data "aws_vpc" "default" {
+  default = true
+}
+
 data "aws_subnets" "public" {
   filter {
     name   = "vpc-id"

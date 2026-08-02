@@ -1,1 +1,31 @@
-# EKS-Terraform
+# EKS-Cluster Through CLI
+
+**Insatll AWS CLI**
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+
+**Install Kubectl**
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+chmod +x kubectl
+mv kubectl /usr/local/bin/
+
+**Install EKSCTL**
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
+eksctl version
+
+**Create EKS Cluster**
+eksctl create cluster --name=EKS-1 --region=us-east-1 --zones=us-east-1a,us-east-1b --without-nodegroup
+
+**Attach IAM Role:**
+eksctl utils associate-iam-oidc-provider --region us-east-1 --cluster EKS-1 --approve
+
+**Create NodeGroup:**
+eksctl create nodegroup --cluster=EKS-1 --region=us-east-1 --name=node2 --node-type=c7i-flex.large --nodes=3 --nodes-min=2 --nodes-max=4 --node-volume-size=20 --ssh-access --ssh-public-key=HP --managed --asg-access --external-dns-access --full-ecr-access --appmesh-access --alb-ingress-access
+
+**UPDATE CLUSTER:**
+aws eks update-kubeconfig --name EKS-1 --region us-east-1
+
+**Delete cluster**
+eksctl delete cluster --name EKS-1 --region us-east-1

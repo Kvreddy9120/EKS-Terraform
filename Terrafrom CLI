@@ -21,6 +21,9 @@ eksctl create cluster --name=EKS-1 --region=us-east-1 --zones=us-east-1a,us-east
 **Attach IAM Role:**
 eksctl utils associate-iam-oidc-provider --region us-east-1 --cluster EKS-1 --approve
 
+**LIST CLUSTER**
+aws eks list-clusters --region us-east-1
+
 **Create NodeGroup:**
 eksctl create nodegroup --cluster=EKS-1 --region=us-east-1 --name=node2 --node-type=c7i-flex.large --nodes=3 --nodes-min=2 --nodes-max=4 --node-volume-size=20 --ssh-access --ssh-public-key=HP --managed --asg-access --external-dns-access --full-ecr-access --appmesh-access --alb-ingress-access
 
